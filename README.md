@@ -1,4 +1,4 @@
-# Hack(H)er413 2019 Data Dictionary 
+# Hack(H)er413 2019/2020 Data Dictionary 
 
 ## Event Applications - 2019 
 
