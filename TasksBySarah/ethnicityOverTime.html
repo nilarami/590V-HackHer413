@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="utf-8">
+
+            <title>Ethnicity over Time</title>
+            <!-- load the d3.js library -->	
+            <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+        
+            <style>
+                body{
+                    font: 10px sans-serif;
+                }
+
+                .axis path, .axis line{
+                    fill: none;
+                    stroke:#000;
+                    shape-rendering: crispEdges;
+                }
+                .toolTip {
+                    position: absolute;
+                    display: none;
+                    font-size: 12px;
+                    min-width: 80px;
+                    height: auto;
+                    background: none repeat scroll 0 0 #ffffff;
+                    border: 1px solid #000;
+                    padding: 14px;
+                    text-align: center;
+                    }
+                
+
+            </style>
+        </head>
+        <body>
+             <script>
+                 var margin = {top: 20, right: 20, bottom: 30, left: 40},
+                    width = 1200 - margin.left - margin.right,
+                    height = 500 - margin.top - margin.bottom;
+                
+                var x0 = d3.scale.ordinal()
+                    .rangeRoundBands([0, width], .5);
+
+                var x1 = d3.scale.ordinal();
+
+                var y = d3.scale.linear()
+                    .range([height, 0]);
+
+                var color = d3.scale.ordinal()
+                    .range(["#f39a9d", "#764248", "#134074", "#ef946c", "#301a4b", "#6db1bf"]);
+
+                var xAxis = d3.svg.axis()
+                    .scale(x0)
+                    .orient("bottom");
+
+                var yAxis = d3.svg.axis()
+                    .scale(y)
+                    .orient("left");
+
+                var svg = d3.select("body").append("svg")
+                        .attr("width", width + margin.left + margin.right)
+                        .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+            d3.csv("ethnicityOverTimeNoGender.csv", function(error, data){
+                var statusNames = d3.keys(data[0]).filter(function(key) {return key !== "ethnicity";});
+                
+                data.forEach(function(d) {
+                    d.status = statusNames.map(function(name) { return {name: name, value: +d[name]}; });
+                });
+
+                x0.domain(data.map(function(d) { return d.ethnicity; }));
+                x1.domain(statusNames).rangeRoundBands([0, x0.rangeBand()]);
+                y.domain([0, d3.max(data, function(d) { return d3.max(d.status, function(d) { return d.value;}); })]);
+            
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(xAxis);
+
+                svg.append("g")
+                        .attr("class", "y axis")
+                        .call(yAxis)
+                    .append("text")
+                        .attr("transform", "rotate(-90)")
+                        .attr('x', -(height / 2) - margin.top)
+                        .attr('y', margin.top / 2 - (margin.top) * 2.1)
+                        .style("text-anchor", "middle")
+                        .text("Number of People");
+                
+                svg.append("g")
+                        .attr("class", "title")
+                    .append('text')
+                        .attr('x', width/2)
+                        .attr('y', 0)
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "20px")
+                        .attr('text-anchor', 'middle')
+                        .text('Ethnicity Over Time')
+
+                var ethnicity = svg.selectAll(".ethnicity")
+                        .data(data)
+                    .enter().append("g")
+                        .attr("class", "g")
+                        .attr("transform", function(d) { return "translate(" + x0(d.ethnicity) + ",0)"; });
+
+                ethnicity.selectAll("rect")
+                        .data(function(d) { return d.status; })
+                    .enter().append("rect")
+                        .attr("width", x1.rangeBand())
+                        .attr("x", function(d) { return x1(d.name); })
+                        .attr("y", function(d) { return y(d.value); })
+                        .attr("height", function(d) { return height - y(d.value); })
+                        .style("fill", function(d) { return color(d.name); })
+                        .on("mousemove", function(d){
+                            tooltip
+                                .style("left", d3.event.pageX - 50 + "px")
+                                .style("top", d3.event.pageY - 70 + "px")
+                                .style("display", "inline-block")
+                                .html((d.name) + ":" + "<br>" +  (d.value));
+                            })
+                                .on("mouseout", function(d){ tooltip.style("display", "none");});
+                        
+                
+                
+                var legend = svg.selectAll(".legend")
+                        .data(statusNames.slice())
+                    .enter().append("g")
+                        .attr("class", "legend")
+                        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+                legend.append("rect")
+                    .attr("x", width - 18)
+                    .attr("width", 18)
+                    .attr("height", 18)
+                    .style("fill", color);
+
+                legend.append("text")
+                    .attr("x", width - 24)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "end")
+                    .text(function(d) { return d; });
+            });
+
+               
+            
+            </script> 
+            
+
+        </body>
+    </html>
