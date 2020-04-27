@@ -1,0 +1,133 @@
+{
+    "name": "workshops",
+    "children": [{
+            "name": "Web Dev",
+            "children": [{
+                "name": "UX",
+                "size": 254
+            }]
+        },
+        {
+            "name": "Interactive Visualization",
+            "size": 169
+        },
+        {
+            "name": "AI",
+            "children": [{
+                    "name": "ML",
+                    "size": 308
+                },
+                {
+                    "name": "NLP",
+                    "size": 230
+                }
+            ]
+        },
+        {
+            "name": "App Dev",
+            "children": [{
+                "name": "Video Game Dev",
+                "size": 183
+            }]
+        },
+        {
+            "name": "Reality",
+            "children": [{
+                    "name": "Virtual Reality",
+                    "size": 285
+                },
+                {
+                    "name": "Augmented Reality",
+                    "size": 215
+                }
+            ]
+        },
+        {
+            "name": "Hardware",
+            "children": [{
+                    "name": "Circuits",
+                    "size": 117
+                },
+                {
+                    "name": "3D Printing",
+                    "size": 207
+                }
+            ]
+        },
+        {
+            "name": "Product Design",
+            "size": 211,
+            "children": []
+        },
+        {
+            "name": "General Programming Languages",
+            "children": [{
+                    "name": "Python",
+                    "size": 303
+                },
+                {
+                    "name": "Java",
+                    "size": 226
+                },
+                {
+                    "name": "R",
+                    "size": 153
+
+                },
+                {
+                    "name": "Ruby",
+                    "size": 106
+                },
+                {
+                    "name": "Javascript",
+                    "size": 184
+                },
+                {
+                    "name": "Swift",
+                    "size": 122
+                }
+            ]
+        },
+        {
+            "name": "Business",
+            "children": [{
+                    "name": "Pitching an Idea",
+                    "size": 162
+                },
+                {
+                    "name": "Coding with Excel",
+                    "size": 160
+                }
+            ]
+        },
+        {
+            "name": "Security",
+            "children": [{
+                "name": "Networks",
+                "size": 166
+            }]
+        },
+        {
+            "name": "Financial Technology",
+            "children": [{
+                "name": "Crypto/Bitcoin",
+                "size": 187
+            }]
+        },
+        {
+            "name": "Github",
+            "size": 228,
+            "children": []
+        },
+        {
+            "name": "Robotics",
+            "size": 215,
+            "children": []
+        },
+        {
+            "name": "No Response",
+            "size": 115,
+            "children": []
+        }
+    ]
+}

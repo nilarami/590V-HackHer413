@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>d3.chart.layout.hierarchy.treemap</title>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="https://rawgit.com/misoproject/d3.chart/master/d3.chart.min.js"></script>
+    <script src="https://rawgit.com/annaghi/d3.chart.layout.hierarchy/master/d3.chart.layout.hierarchy.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <style>
+        html {
+            margin: auto;
+        }
+
+        #vis {
+            width: 960px;
+            height: 500px;
+        }
+
+        .cell text {
+            cursor: move;
+            font: 13px sans-serif;
+            text-anchor: middle;
+        }
+
+        .cell rect {
+            stroke: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="logo">
+            <h4>Hack(H)er413</h4>
+        </div>
+        <ul class="nav-links">
+            <li>
+                <a href="../index.html">Home</a>
+            </li>
+            <li>
+                <a href="../organizers/index.html">Organizers</a>
+            </li>
+            <li>
+                <a href="../sponsors/index.html">Sponsors</a>
+            </li>
+            <li>
+                <a href="../diversity/index.html">Diversity</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="vis"></div>
+
+    <script>
+        (function () {
+            d3.json("marketing.json",
+                function (error, json) {
+
+                    var treemap = d3.select("#vis").append("svg")
+                        .chart("treemap")
+                        .value("size")
+                        .sortable("_DESC_")
+                        .collapsible()
+                        .colors(['#F39A9D', '#EF946C', '#A8577E', '#6DB1BF', '#B79D94']);
+
+                    var text = d3.select("text").append("svg")
+                    treemap.draw(json);
+                });
+        }());
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+{
+    "name":"Marketing Efforts",
+    "children":[
+        {
+            "name": "Hackathon Event",
+            "children": [{
+                    "name": "HackUMass",
+                    "size": 16
+                },
+                {
+                    "name": "Hack(H)er413 2019",
+                    "size": 55
+                },
+                {
+                    "name": "Wayfair Event",
+                    "size": 2
+                }
+            ]
+        }, 
+        {
+            "name": "Social Media ",
+            "children": [{
+                    "name": "Facebook",
+                    "size": 32
+                },
+                {
+                    "name": "Instagram",
+                    "size": 6
+                },
+                {
+                    "name": "Twitter",
+                    "size": 3
+                },
+                {
+                    "name": "Medium",
+                    "size": 2
+                }
+            ]
+        },
+        {
+             "name": "Umass Campus ",
+             "children": [{
+                     "name": "Tabling",
+                     "size": 3
+                 },
+                 {
+                     "name": "Flyers",
+                     "size": 3
+                 },
+                 {
+                     "name": "Orientation",
+                     "size": 2
+                 },
+                 {
+                     "name": "Club",
+                     "size": 24
+                 },
+                 {
+                     "name": "Computer Science Department",
+                     "size": 22
+                 }
+             ] 
+        },
+        {
+            "name": "Word of Mouth",
+            "children": [{
+                    "name": "Friend",
+                    "size": 21
+                },
+                {
+                    "name": "Ambassador",
+                    "size": 2
+                }
+            ]
+        },
+        {
+            "name": "Five College Area",
+            "children": [{
+                    "name": "Smith",
+                    "size": 17
+               }  
+            ]
+        },
+        {
+            "name": "Women in Tech Organization",
+            "size": 21
+        }
+
+
+
+    ]  
+}
+
+
