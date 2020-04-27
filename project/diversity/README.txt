@@ -1,0 +1,1 @@
+In order to run the files for Tasks 1,2, and 4, you must download all HTML and CSV files into the same folder. Open the HTML files in Visual Studio Code and run them, one at a time, using the Live extension. Make sure the Live extension opens the windows in Google Chrome.
