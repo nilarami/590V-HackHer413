@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../style.css">
+  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+
+<head>
+	<style>
+
+  .bar{
+    fill: #134074;
+  }
+
+  .bar:hover{
+    fill: #6DB1BF;
+  }
+
+	.axis {
+	  font: 15px sans-serif;
+	}
+
+	.axis path,
+	.axis line {
+	  fill: none;
+	  stroke: #000;
+	  shape-rendering: crispEdges;
+	}
+  .toolTip {
+                    position: absolute;
+                    display: none;
+                    font-size: 13.5px;
+                    min-width: 80px;
+                    height: auto;
+                    background: none repeat scroll 0 0 #ffffff;
+                    border: 1px solid #000;
+                    padding: 14px;
+                    text-align: center;
+            }
+    body {
+  background-color: papayawhip;
+  }
+
+	</style>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">
+        <h4>Hack(H)er413</h4>
+    </div>
+    <ul class="nav-links">
+        <li>
+            <a href="../index.html">Home</a>
+        </li>
+        <li>
+            <a href="../organizers/index.html">Organizers</a>
+        </li>
+        <li>
+            <a href="../sponsors/index.html">Sponsors</a>
+        </li>
+        <li>
+            <a href="../diversity/index.html">Diversity</a>
+        </li>
+    </ul>
+</nav>
+  
+<title>Programming Skills</title>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+
+<script>
+// set the dimensions of the canvas
+var margin = {top: 50, right: 30, bottom: 120, left: 150},
+    width = 800 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+// set the ranges
+var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+var y = d3.scale.linear().range([height, 0]);
+
+// define the axis
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+
+// add the SVG element
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+          "translate(" + margin.left + "," + margin.top + ")");
+
+
+// load the data
+d3.json("pr.json", function(error, data) {
+
+    data.forEach(function(d) {
+        d.skills = d.skills;
+        d.students = +d.students;
+    });
+	
+  // scale the range of the data
+  x.domain(data.map(function(d) { return d.skills; }));
+  y.domain([0, d3.max(data, function(d) { return d.students; })]);
+
+  // add axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(0)")
+      .attr("dx", "-0.5em")
+      .attr("dy", "-.01em")
+      .style("text-anchor", "end")
+      .text("Number of students");
+
+
+  // Add bar chart
+  svg.selectAll("bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.skills); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.students); })
+      .attr("height", function(d) { return height - y(d.students); })
+      .on("mousemove", function(d){
+                            tooltip
+                                .style("left", d3.event.pageX - 50 + "px")
+                                .style("top", d3.event.pageY - 70 + "px")
+                                .style("display", "inline-block")
+                                .html((d.skills) + ":" + "<br>" +  (d.students));
+                            })
+                                .on("mouseout", function(d){ tooltip.style("display", "none");});
+      
+
+});
+
+</script>
+
+</body>

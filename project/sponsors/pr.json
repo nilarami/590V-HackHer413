@@ -1,0 +1,42 @@
+[
+ {
+   "skills": "HTML/CSS",
+   "students": 352
+ },
+ {
+   "skills": "React",
+   "students": 189
+ },
+ {
+   "skills": "Javascript",
+   "students": 234
+ },
+ {
+   "skills": "Java",
+   "students": 333
+ },
+ {
+   "skills": "Python",
+   "students": 347
+ },
+ {
+   "skills": "Node.JS",
+   "students": 128
+ },
+ {
+   "skills": "Angular",
+   "students": 216
+ },
+ {
+   "skills": "C/C++/C#",
+   "students": 365
+ },
+ {
+   "skills": "SQL",
+   "students": 296
+ },
+ {
+   "skills": "Ruby",
+   "students": 140
+ }
+]

@@ -1,0 +1,129 @@
+[
+    {
+      "name": "Number of Students",
+      "parent": "null",
+      "children": [
+        {
+          "name": "Checked In: Yes (555)",
+          "parent": "Number of Students",
+          "children": [
+            {
+              "name": "Linked In : Yes (329) ",
+              "parent": "Checked In: Yes",
+              "children":[
+                  {
+                      "name": "Github : Yes",
+                      "parent": "Linked In : Yes",
+                      "children": [
+                          {
+                              "name":157,
+                              "parent":"Github:Yes"
+                          }
+                      ]
+                  },
+                  {
+                      "name": "Github : No",
+                      "parent": "Linked In : Yes",
+                      "children": [
+                          {
+                              "name":172,
+                              "parent":"Github:No"
+                          }
+                      ]  
+                  }
+              ]
+            },
+            {
+              "name": "Linked In : No (226)",
+              "parent": "Checked In : Yes",
+              "children":[
+                  {
+                      "name":"Github : Yes",
+                      "parent":"Linked In :No",
+                      "children": [
+                          {
+                              "name": 8,
+                              "parent":"Github : Yes"
+                          }
+  
+                      ]
+                  },
+                  {
+                      "name":"Github : No",
+                      "parent":"Linked In :No",
+                      "children": [
+                          {
+                              "name": 218,
+                              "parent":"Github : No"
+                          }
+  
+                      ] 
+                  }
+              ]
+            }
+          
+          ]
+        },
+        {
+          "name": "Checked In : No (421)",
+          "parent": "Number of Students",
+          "children":[
+              {
+                  "name": "Linked In : Yes (85)",
+                  "parent": "Checked In : No",
+                  "children":[
+                      {
+                          "name": "Github : Yes",
+                          "parent": "Linked In : Yes",
+                          "children":[
+                              {
+                                  "name": 32,
+                                  "parent": "Github : Yes"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "Github : No",
+                          "parent": "Linked In : Yes",
+                          "children":[
+                              {
+                                  "name": 53,
+                                  "parent": "Github : No"
+                              }
+                          ]
+                      }
+  
+                  ]
+              },
+              {
+                  "name": "Linked In : No (336)",
+                  "parent": "Checked In : No",
+                  "children":[
+                      {
+                          "name": "Github : Yes",
+                          "parent": "Linked In : No",
+                          "children":[
+                              {
+                                  "name": 91,
+                                  "parent": "Github : Yes"
+                              }
+                          ]
+                      },
+                      {
+                          "name": "Github : No",
+                          "parent": "Linked In : No",
+                          "children":[
+                              {
+                                  "name": 245,
+                                  "parent": "Github : No"
+                              }
+                          ]
+                      }
+                      ]
+              }
+          ]
+          
+        }
+      ]
+    }
+  ]
