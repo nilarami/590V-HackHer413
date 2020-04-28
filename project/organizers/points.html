@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<style>
+ 
+.states {
+	fill: #e5e5e5;
+	stroke: #fff;
+	stroke-width:1px;
+}
+.accepted {
+	fill:#0075f2;
+	opacity:1;
+	stroke: black;
+	stroke-width: 1;
+}
+
+.rsvp {
+	fill: #f42c04;
+	opacity:1;
+	stroke: black;
+	stroke-width: 1;
+}
+
+.checkin {
+	fill:  #38a700;
+	opacity:1;
+	stroke: black;
+	stroke-width: 1;
+}
+ 
+</style>
+<body style = "background-color: #ffeed6;">
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo.v1.min.js"></script>
+<script>
+ 
+var width = 1300,
+	height = 700;
+
+var svg = d3.select('body').append('svg')
+    .attr('width', width)
+    .attr('height', height)
+ 
+var projection = d3.geoAlbersUsa()
+	.scale(1300)
+	.translate([width/2, height/2]);
+ 
+var path = d3.geoPath(projection);
+
+var g = svg.append("g")
+    		.on("wheel.zoom",function(){
+        		var currScale = projection.scale();
+        		var newScale = currScale - 2*event.deltaY;
+        		var currTranslate = projection.translate();
+        		var coords = projection.invert([event.offsetX, event.offsetY]);
+        		projection.scale(newScale);
+        		var newPos = projection(coords);
+
+       			projection.translate([currTranslate[0] + (event.offsetX - newPos[0]), currTranslate[1] + (event.offsetY - newPos[1])]);
+        		g.selectAll("path").attr("d", path);
+
+    })
+    		.call(d3.drag().on("drag", function(){
+        		var currTranslate = projection.translate();
+        		projection.translate([currTranslate[0] + d3.event.dx,
+                              currTranslate[1] + d3.event.dy]);
+        		g.selectAll("path").attr("d", path);
+    }));
+
+var rect = g.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .style("fill", "none")
+    .style("pointer-events", "all");
+
+g.append("circle").attr("cx",1100).attr("cy",250).attr("r", 6).style("fill", "#0075f2")
+g.append("circle").attr("cx",1100).attr("cy",280).attr("r", 6).style("fill", "#f42c04")
+g.append("circle").attr("cx",1100).attr("cy",310).attr("r", 6).style("fill", "#38a700")
+g.append("text").attr("x", 1120).attr("y", 250).text("Accepted").style("font-size", "15px").attr("alignment-baseline","middle")
+g.append("text").attr("x", 1120).attr("y", 280).text("RSVPd").style("font-size", "15px").attr("alignment-baseline","middle")
+g.append("text").attr("x", 1120).attr("y", 310).text("Checked in").style("font-size", "15px").attr("alignment-baseline","middle")
+
+queue()
+    .defer(d3.json, "states.json")
+	.defer(d3.json, 'map_0.geojson')
+	.await(makeMyMap);
+
+queue()
+	.defer(d3.json, 'map_1.geojson')
+	.await(one);
+
+queue()
+	.defer(d3.json, 'map_2.geojson')
+	.await(two);
+
+function makeMyMap(error, states, cities) {
+    g.append("path")
+        .datum(topojson.feature(states, states.objects.usStates))
+        .attr("class", "states")
+        .attr("d", path) 
+		.style("fill", "#b79d94");
+
+	g.selectAll('.accepted')
+		.data(cities.features)
+		.enter()
+		.append('path')
+		.attr('d', path.pointRadius(3))
+		.attr('class', 'accepted')
+		.border();
+}
+
+function one(error, cities) {
+	g.selectAll('.rsvp')
+		.data(cities.features)
+		.enter()
+		.append('path')
+		.attr('d', path.pointRadius(3))
+		.attr('class', 'rsvp');
+}
+
+function two(error, cities) {
+	g.selectAll('.checkin')
+		.data(cities.features)
+		.enter()
+		.append('path')
+		.attr('d', path.pointRadius(3))
+		.attr('class', 'checkin');
+}
+</script>
+</body>
+</html>

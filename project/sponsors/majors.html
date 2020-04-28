@@ -1,0 +1,150 @@
+<html>
+<style>
+
+.axis .domain {
+  display: none;
+}
+div.tooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 40px;					
+    height: 15px;					
+    padding: 2px;				
+    font: 12px sans-serif;		
+    background: lightgoldenrodyellow;	
+    border: 2px black solid;		
+    border-radius: 8px;			
+    pointer-events: none;			
+}
+
+</style>
+<body style = "background-color: #ffeed6;">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script>
+  
+  var div = d3.select("body").append("div")	
+    .attr("class", "tooltip")				
+    .style("opacity", 0);
+
+  var margin = {top: 20, right: 20, bottom: 30, left: 150},
+    width = 760 - margin.left - margin.right,
+    height = 660 - margin.top - margin.bottom;
+
+  var svg = d3.select("body")
+    .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom),
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var y = d3.scaleBand()			// x = d3.scaleBand()	
+      .rangeRound([0, height])	// .rangeRound([0, width])
+      .paddingInner(0.05)
+      .align(0.1);
+  
+  
+  var x = d3.scalePow()		// y = d3.scaleLinear()
+          .exponent(0.4)
+          .domain([0.5, 100])
+          .range([1, width]).nice(); // .rangeRound([height, 0]);
+  
+  var z = d3.scaleOrdinal()
+      .range(["#6db1bf", "#EF946C", "#a8577e", "#764248", "#b79d94", "#3f6c51", "#134074", "#301a4b"]);
+  
+      
+  d3.csv("main_majors.csv", function(d, i, columns) {
+    for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
+    d.total = t;
+    return d;
+  }, function(error, data) {
+    if (error) throw error;
+  
+    var keys = data.columns.slice(1);
+  
+    data.sort(function(a, b) { return b.total - a.total; });
+    y.domain(data.map(function(d) { return d.Major; }));					// x.domain...
+    x.domain([0, d3.max(data, function(d) { return d.total; })]).nice();	// y.domain...
+    z.domain(keys);
+
+    g
+      .append("g")
+      .selectAll("g")
+      .data(d3.stack().keys(keys)(data))
+      .enter().append("g")
+        .attr("fill", function(d) { return z(d.key); })
+      .selectAll("rect")
+      .data(function(d) { return d; })
+      .enter().append("rect")
+        .attr("y", function(d) { return y(d.data.Major); })	    //.attr("x", function(d) { return x(d.data.State); })
+        .attr("x", function(d) { return x(d[0]); })			    //.attr("y", function(d) { return y(d[1]); })	
+        .attr("width", function(d) { return x(d[1]) - x(d[0]); })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
+        .attr("height", y.bandwidth())
+        .on("mouseover", function(d) {	
+          d3.select(this)
+          .transition()
+            .duration(200)
+            .attr("width", function(d) { return (x(d[1]) - x(d[0])) * 1.2; })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
+            .attr("height", y.bandwidth()*1.5);
+            div.transition()		
+                .duration(200)		
+                .style("opacity", .9);		
+            div	.html((d[1] - d[0]))	
+                .style("left", (d3.event.pageX) + "px")		
+                .style("top", (d3.event.pageY - 28) + "px");	
+            })					
+        .on("mouseout", function(d) {
+          d3.select(this)
+          .transition()
+            .duration(200)
+            .attr("width", function(d) { return x(d[1]) - x(d[0]); })	//.attr("height", function(d) { return y(d[0]) - y(d[1]); })
+            .attr("height", y.bandwidth());
+		
+            div.transition()		
+                .duration(500)		
+                .style("opacity", 0);	
+        });
+						    //.attr("width", x.bandwidth());	
+  
+    g.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0,0)") 						//  .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisLeft(y));									//   .call(d3.axisBottom(x));
+  
+    g.append("g")
+        .attr("class", "axis")
+      .attr("transform", "translate(0,"+height+")")				// New line
+        .call(d3.axisBottom(x).ticks(null, "s"))					//  .call(d3.axisLeft(y).ticks(null, "s"))
+      .append("text")
+        .attr("y", 2)												//     .attr("y", 2)
+        .attr("x", x(x.ticks().pop()) + 0.5) 						//     .attr("y", y(y.ticks().pop()) + 0.5)
+        .attr("dy", "0.32em")										//     .attr("dy", "0.32em")
+        .attr("fill", "#000")
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "start")
+        .text("Number of Students")
+      .attr("transform", "translate("+ (-width) +",25)");   	// Newline
+  
+    var legend = g.append("g")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 10)
+        .attr("text-anchor", "end")
+      .selectAll("g")
+      .data(keys.slice().reverse())
+      .enter().append("g")
+      //.attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+     .attr("transform", function(d, i) { return "translate(-50," + (300 + i * 20) + ")"; });
+  
+    legend.append("rect")
+        .attr("x", width - 19)
+        .attr("width", 19)
+        .attr("height", 19)
+        .attr("fill", z);
+  
+    legend.append("text")
+        .attr("x", width - 24)
+        .attr("y", 9.5)
+        .attr("dy", "0.32em")
+        .text(function(d) { return d; });
+  });
+  
+  </script>
+</body>
+</html>
