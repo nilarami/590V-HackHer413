@@ -87,3 +87,17 @@ main{
       width: 30em; 
 }
 
+.data{
+    padding: 0;    
+    margin-left: 10%;
+    font-weight: normal;
+    font-size: 15px;
+    text-align: left;
+   display: inline-block;
+}
+
+.bullet li{
+    
+    list-style: circle;
+}
+
